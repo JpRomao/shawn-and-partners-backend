@@ -4,6 +4,13 @@ import UserController from "./controllers/UserController";
 
 const router = Router();
 
+router.get("/", (request, response) => {
+  return response.json({
+    message:
+      "Hello. You can view the documentation of this api at: https://github.com/JpRomao/shawn-and-partners/tree/main/backend",
+  });
+});
+
 router.get("/users", async (request, response) => {
   try {
     const since =
