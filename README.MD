@@ -55,3 +55,5 @@
     <p>description: get all repos from a user from github api by username</p>
   </li>
 </ul>
+
+[shawn-and-partners-insomnia.zip](https://github.com/JpRomao/shawn-and-partners-backend/files/9999951/shawn-and-partners-insomnia.zip)
