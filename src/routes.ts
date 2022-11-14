@@ -1,11 +1,12 @@
 import { Router } from "express";
+
 import RepoController from "./controllers/RepoController";
 import UserController from "./controllers/UserController";
 
 const router = Router();
 
 router.get("/", (request, response) => {
-  return response.json({
+  return response.status(200).json({
     message:
       "Hello. You can view the documentation of this api at: https://github.com/JpRomao/shawn-and-partners/tree/main/backend",
   });
