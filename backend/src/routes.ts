@@ -1,4 +1,5 @@
 import { Router } from "express";
+import RepoController from "./controllers/RepoController";
 import UserController from "./controllers/UserController";
 
 const router = Router();
@@ -46,9 +47,16 @@ router.get("/users/:username/repos", async (request, response) => {
   try {
     const { username } = request.params;
 
-    const { data: repos } = await api.get(`/users/${username}/repos`);
+    if (!username) {
+      return response.status(400).json({
+        error:
+          "Missing username parameter. use '/users/{username}/repos' to set it.",
+      });
+    }
 
-    return response.status(200).json({ repos });
+    const user = await RepoController.getRepos(username);
+
+    return response.status(200).json({ user });
   } catch (error) {
     const { message } = error as Error;
 
