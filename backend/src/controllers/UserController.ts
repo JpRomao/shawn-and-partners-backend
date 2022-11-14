@@ -1,8 +1,8 @@
 import { api } from "../githubApi";
 
 class UserController {
-  public async getUsers(since: number, skip: number) {
-    const { data: users } = await api.get(`/users?since=${since + skip}`);
+  public async getUsers(since: number) {
+    const { data: users } = await api.get(`/users?since=${since}`);
 
     return users;
   }

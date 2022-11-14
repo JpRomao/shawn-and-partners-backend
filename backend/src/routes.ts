@@ -6,18 +6,22 @@ const router = Router();
 
 router.get("/users", async (request, response) => {
   try {
-    const since = Number(request.query.since);
+    const since =
+      Number(request.query.since) < 0 ? 0 : Number(request.query.since) || 0;
     const skip = 30;
 
-    if (!since || since < 0) {
-      return response.status(400).json({
-        error: "Missing since parameter. use '?since={number}' to set it.",
+    if (since || since === 0) {
+      const users = await UserController.getUsers(since);
+
+      return response.status(200).json({
+        users,
+        nextPage: since + skip,
       });
     }
 
-    const users = await UserController.getUsers(since, skip);
-
-    return response.status(200).json(users);
+    return response.status(400).json({
+      message: "Since is required. Use '/users?since={number}' to get users.",
+    });
   } catch (error) {
     const { message, stack } = error as Error;
 
@@ -30,6 +34,12 @@ router.get("/users", async (request, response) => {
 router.get("/users/:username/details", async (request, response) => {
   try {
     const { username } = request.params;
+
+    if (!username) {
+      return response
+        .status(400)
+        .json({ message: "Username parameter is required" });
+    }
 
     const user = await UserController.getUserDetails(username);
 
@@ -50,7 +60,7 @@ router.get("/users/:username/repos", async (request, response) => {
     if (!username) {
       return response.status(400).json({
         error:
-          "Missing username parameter. use '/users/{username}/repos' to set it.",
+          "Missing username parameter. Use '/users/{username}/repos' to set it.",
       });
     }
 
